@@ -1,0 +1,14 @@
+.gitignore
+.prettierignore
+.husky
+
+node_modules
+dist
+
+package.json
+pnpm-lock.yaml
+README.md
+
+coverage
+.github
+kubernetes

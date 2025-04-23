@@ -1,0 +1,13 @@
+#!/bin/sh
+
+echo "Running lint checks..."
+pnpm run lint
+
+echo "Running Type checks..."
+pnpm run type-check
+
+echo "Running format checks..."
+pnpm run check-format
+
+# If all commands succeed, allow commit to proceed
+exit 0

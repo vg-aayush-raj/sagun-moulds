@@ -1,0 +1,15 @@
+npx --no-install commitlint --edit "$1" || {
+    echo "\n❌ Error: Commit message does not follow the required format.\n"
+    echo "✅ Please ensure your commit message follows this format:"
+    echo "  - feat: A new feature (e.g., 'feat: Add user login functionality')"
+    echo "  - fix: A bug fix (e.g., 'fix: Resolve issue with user login')"
+    echo "  - docs: Documentation only changes (e.g., 'docs: Update README with new instructions')"
+    echo "  - style: Changes that do not affect the meaning of the code (e.g., 'style: Format code according to style guide')"
+    echo "  - refactor: A code change that neither fixes a bug nor adds a feature (e.g., 'refactor: Simplify login logic')"
+    echo "  - perf: A code change that improves performance (e.g., 'perf: Optimize login process')"
+    echo "  - test: Adding missing tests or correcting existing tests (e.g., 'test: Add tests for login functionality')"
+    echo "  - chore: Changes to the build process or auxiliary tools (e.g., 'chore: Update dependencies')"
+    echo "\n📖 For more details, refer to the guidelines:"
+    echo "   🔗 https://valgenesis.atlassian.net/wiki/spaces/VNPD/pages/387219458/Guidelines+for+Commit+Messages"
+    exit 1
+}
