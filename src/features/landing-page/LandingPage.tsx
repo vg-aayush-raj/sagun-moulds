@@ -72,7 +72,7 @@ export default function LandingPage() {
                 letterSpacing: '0.05em',
               }}
             >
-              SAGUN MOULDIFY
+              SAGUN MOLDIFY
             </Typography>
 
             <Typography
@@ -188,7 +188,9 @@ export default function LandingPage() {
           fontSize: '0.8rem',
         }}
       >
-        <Typography variant="body2">© 2024 SAGUN MOULDIFY PRIVATE LIMITED</Typography>
+        <Typography variant="body2">
+          © {new Date().getFullYear()} Sagun Moldify Pvt. Ltd. All rights reserved.
+        </Typography>
       </Box>
     </Box>
   );
