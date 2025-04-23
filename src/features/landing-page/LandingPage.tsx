@@ -6,14 +6,8 @@ import BgImage from '../../assets/bg-cups.png';
 // Updated contact data to match the image
 const contacts = [
   {
-    name: 'Chandan Kumar',
-    role: 'Managing Director',
-    phone: '+91 9876543210',
-  },
-  {
-    name: 'Madhusudan Prasad',
-    role: 'Managing Director',
-    phone: '+91 9123456780',
+    name: 'Helpdesk',
+    phone: ['+91 9631666609'],
   },
 ];
 
@@ -159,12 +153,15 @@ export default function LandingPage() {
                         <Typography variant="h6" component="div" fontWeight={600} color="text.primary">
                           {contact.name}
                         </Typography>
-                        <Typography color="text.secondary" sx={{ mb: 1 }}>
-                          {contact.role}
-                        </Typography>
-                        <Box display="flex" alignItems="center" gap={1} color="primary.main">
-                          <PhoneIcon fontSize="small" />
-                          <Typography>{contact.phone}</Typography>
+                        <Box alignItems="center" gap={1} color="primary.main">
+                          {contact.phone.map((ph) => {
+                            return (
+                              <Box sx={{ display: 'flex', py: 2, alignItems: 'center' }}>
+                                <PhoneIcon sx={{ mr: 1 }} fontSize="small" />
+                                <Typography>{ph}</Typography>
+                              </Box>
+                            );
+                          })}
                         </Box>
                       </CardContent>
                     </Card>
