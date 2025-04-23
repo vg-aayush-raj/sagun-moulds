@@ -1,6 +1,6 @@
+import PhoneIcon from '@mui/icons-material/Phone';
 import { Box, Container, Typography, Button, Card, CardContent, Grid, useMediaQuery, useTheme } from '@mui/material';
 import { motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
 import BgImage from '../../assets/bg-cups.png';
 
 // Updated contact data to match the image
@@ -20,20 +20,6 @@ const contacts = [
 export default function LandingPage() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   return (
     <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
@@ -159,43 +145,33 @@ export default function LandingPage() {
           </Typography>
 
           <Grid container spacing={3} justifyContent="center">
-            {contacts.map((contact, index) => (
-              <Grid item xs={12} sm={6} md={4} key={index}>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.2 }}
-                >
-                  <Card
-                    elevation={1}
-                    sx={{
-                      borderRadius: 2,
-                      backgroundColor: 'white',
-                      height: '100%',
-                    }}
+            {contacts.map((contact, index) => {
+              const gridProps: any = { item: true, xs: 12, md: 6, key: index };
+              return (
+                <Grid {...gridProps}>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.2 }}
                   >
-                    <CardContent sx={{ textAlign: 'center', p: 3 }}>
-                      <Typography variant="h6" component="div" fontWeight={600} color="#333" sx={{ mb: 1 }}>
-                        {contact.name}
-                      </Typography>
-
-                      <Typography color="text.secondary" sx={{ mb: 2, fontSize: '0.9rem' }}>
-                        {contact.role}
-                      </Typography>
-
-                      <Typography
-                        sx={{
-                          color: '#555',
-                          fontSize: '0.9rem',
-                        }}
-                      >
-                        {contact.phone}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              </Grid>
-            ))}
+                    <Card elevation={5} sx={{ borderRadius: 3, backgroundColor: 'rgba(255, 255, 255, 0.9)' }}>
+                      <CardContent>
+                        <Typography variant="h6" component="div" fontWeight={600} color="text.primary">
+                          {contact.name}
+                        </Typography>
+                        <Typography color="text.secondary" sx={{ mb: 1 }}>
+                          {contact.role}
+                        </Typography>
+                        <Box display="flex" alignItems="center" gap={1} color="primary.main">
+                          <PhoneIcon fontSize="small" />
+                          <Typography>{contact.phone}</Typography>
+                        </Box>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                </Grid>
+              );
+            })}
           </Grid>
         </Container>
       </Box>

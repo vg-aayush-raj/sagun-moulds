@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import routesConfig from './routes/routesConfig';
 import LandingPage from './features/landing-page/LandingPage';
+import routesConfig from './routes/routesConfig';
 
 const AppLayout = () => {
   return <LandingPage />;
