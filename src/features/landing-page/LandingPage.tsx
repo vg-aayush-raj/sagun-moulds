@@ -11,7 +11,7 @@ const contacts = [
     phone: '+91 9876543210',
   },
   {
-    name: 'Kiran Patel',
+    name: 'Madhusudan Prasad',
     role: 'Managing Director',
     phone: '+91 9123456780',
   },
