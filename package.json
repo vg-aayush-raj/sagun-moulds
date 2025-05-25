@@ -4,7 +4,6 @@
   "type": "module",
   "scripts": {
     "dev": "vite --mode=dev",
-    // "build": "pnpm run type-check && pnpm run lint && vite build --mode",
     "build": "vite build --mode",
     "type-check": "tsc -b",
     "format": "prettier --write .",
