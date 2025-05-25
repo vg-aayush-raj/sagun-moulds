@@ -1,5 +1,12 @@
 import { forwardRef } from 'react';
-import { TextField as MuiTextField, TextFieldProps as MuiTextFieldProps, SxProps, Theme } from '@mui/material';
+import {
+  TextField as MuiTextField,
+  TextFieldProps as MuiTextFieldProps,
+  SxProps,
+  Theme,
+  Typography,
+  Box,
+} from '@mui/material';
 
 // Base styles for all text fields
 const baseStyles: SxProps<Theme> = {
@@ -9,8 +16,18 @@ const baseStyles: SxProps<Theme> = {
       borderColor: 'var(--primary-main)',
     },
   },
-  '& .MuiInputLabel-root.Mui-focused': {
-    color: 'var(--primary-main)',
+  // Simplify label styling to make it plain and clean
+  '& .MuiInputLabel-root': {
+    fontWeight: 'normal',
+    color: 'var(--text-secondary)',
+    width: 'auto',
+    transform: 'none',
+    position: 'static',
+    marginBottom: '8px',
+  },
+  // Remove floating label effect
+  '& .MuiInputLabel-shrink': {
+    transform: 'none',
   },
 };
 
@@ -21,11 +38,9 @@ export interface TextFieldProps extends Omit<MuiTextFieldProps, 'inputProps'> {
 
 // Our custom TextField component that handles deprecated inputProps
 export const TextField = forwardRef<HTMLDivElement, TextFieldProps>((props, ref) => {
-  const { sx, inputProps, ...rest } = props;
+  const { sx, inputProps, label, ...rest } = props;
 
   // Handle inputProps specifically for step, min, max attributes
-  // Instead of trying to map to slotProps (which has a different structure),
-  // we'll use InputProps.inputProps which is still supported for basic HTML attributes
   const updatedProps = inputProps
     ? {
         ...rest,
@@ -40,14 +55,21 @@ export const TextField = forwardRef<HTMLDivElement, TextFieldProps>((props, ref)
     : rest;
 
   return (
-    <MuiTextField
-      ref={ref}
-      variant="outlined"
-      size="medium"
-      fullWidth
-      sx={{ ...baseStyles, ...sx }}
-      {...updatedProps}
-    />
+    <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+      {label && (
+        <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
+          {label}
+        </Typography>
+      )}
+      <MuiTextField
+        ref={ref}
+        variant="outlined"
+        size="medium"
+        fullWidth
+        sx={{ ...baseStyles, ...sx }}
+        {...updatedProps}
+      />
+    </Box>
   );
 });
 
