@@ -1,6 +1,7 @@
 import { FC } from 'react';
-import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 import { Box, Container, AppBar, Toolbar, Typography, Drawer } from '@mui/material';
+import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
+import { ThemeProvider } from './components/styles';
 import LandingPage from './features/landing-page/LandingPage';
 import Menu from './routes/menu';
 import routesConfig from './routes/routesConfig';
@@ -55,7 +56,11 @@ const router = createBrowserRouter([
 ]);
 
 const App: FC = () => {
-  return <RouterProvider router={router} />;
+  return (
+    <ThemeProvider>
+      <RouterProvider router={router} />
+    </ThemeProvider>
+  );
 };
 
 export default App;

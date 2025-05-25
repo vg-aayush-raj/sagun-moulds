@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
-import { NavLink } from 'react-router-dom';
-import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import HomeIcon from '@mui/icons-material/Home';
+import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { NavLink } from 'react-router-dom';
 
 interface MenuItemProps {
   to: string;
@@ -17,12 +17,21 @@ function MenuItem({ to, icon, text }: MenuItemProps) {
         component={NavLink}
         to={to}
         sx={{
+          borderRadius: 1,
+          mx: 1,
           '&.active': {
-            backgroundColor: 'rgba(25, 118, 210, 0.12)',
+            backgroundColor: 'rgba(44, 108, 176, 0.12)',
+            color: 'var(--primary-main)',
+            '& .MuiListItemIcon-root': {
+              color: 'var(--primary-main)',
+            },
+          },
+          '&:hover': {
+            backgroundColor: 'rgba(44, 108, 176, 0.08)',
           },
         }}
       >
-        <ListItemIcon>{icon}</ListItemIcon>
+        <ListItemIcon sx={{ minWidth: 40 }}>{icon}</ListItemIcon>
         <ListItemText primary={text} />
       </ListItemButton>
     </ListItem>
@@ -32,7 +41,7 @@ function MenuItem({ to, icon, text }: MenuItemProps) {
 export default function Menu() {
   return (
     <Box sx={{ width: '100%' }}>
-      <List>
+      <List sx={{ py: 0 }}>
         <MenuItem to="/" icon={<HomeIcon />} text="Home" />
         <MenuItem to="/business-analysis" icon={<BusinessCenterIcon />} text="Business Analysis" />
       </List>
