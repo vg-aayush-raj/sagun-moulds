@@ -30,7 +30,7 @@ export function ProductionSetupSection() {
                 type="number"
                 error={!!errors.productionSetup?.thermoformingMachines}
                 helperText={errors.productionSetup?.thermoformingMachines?.message}
-                InputProps={{ inputProps: { min: 1, step: 1 } }}
+                inputProps={{ min: 1, step: 1 }}
                 value={field.value ?? ''}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => field.onChange(Number(e.target.value))}
               />
@@ -49,7 +49,7 @@ export function ProductionSetupSection() {
                 type="number"
                 error={!!errors.productionSetup?.printers}
                 helperText={errors.productionSetup?.printers?.message}
-                InputProps={{ inputProps: { min: 1, step: 1 } }}
+                inputProps={{ min: 1, step: 1 }}
                 value={field.value ?? ''}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => field.onChange(Number(e.target.value))}
               />
@@ -68,7 +68,7 @@ export function ProductionSetupSection() {
                 type="number"
                 error={!!errors.productionSetup?.sheetlines}
                 helperText={errors.productionSetup?.sheetlines?.message}
-                InputProps={{ inputProps: { min: 1, step: 1 } }}
+                inputProps={{ min: 1, step: 1 }}
                 value={field.value ?? ''}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => field.onChange(Number(e.target.value))}
               />
@@ -88,7 +88,7 @@ export function ProductionSetupSection() {
                 type="number"
                 error={!!errors.cupsPerDay?.thermoforming}
                 helperText={errors.cupsPerDay?.thermoforming?.message}
-                InputProps={{ inputProps: { min: 1000, step: 1000 } }}
+                inputProps={{ min: 1000, step: 1000 }}
                 value={field.value ?? ''}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => field.onChange(Number(e.target.value))}
               />
@@ -107,7 +107,7 @@ export function ProductionSetupSection() {
                 type="number"
                 error={!!errors.cupsPerDay?.printing}
                 helperText={errors.cupsPerDay?.printing?.message}
-                InputProps={{ inputProps: { min: 1000, step: 1000 } }}
+                inputProps={{ min: 1000, step: 1000 }}
                 value={field.value ?? ''}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => field.onChange(Number(e.target.value))}
               />

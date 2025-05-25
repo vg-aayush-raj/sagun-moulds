@@ -14,13 +14,41 @@ const baseStyles: SxProps<Theme> = {
   },
 };
 
-// Re-export the TextFieldProps type from MUI
-export type TextFieldProps = MuiTextFieldProps;
+// Export the TextFieldProps type that extends MUI's TextFieldProps and also includes inputProps
+export interface TextFieldProps extends Omit<MuiTextFieldProps, 'inputProps'> {
+  inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
+}
 
+// Our custom TextField component that handles deprecated inputProps
 export const TextField = forwardRef<HTMLDivElement, TextFieldProps>((props, ref) => {
-  const { sx, ...rest } = props;
+  const { sx, inputProps, ...rest } = props;
 
-  return <MuiTextField ref={ref} variant="outlined" size="medium" fullWidth sx={{ ...baseStyles, ...sx }} {...rest} />;
+  // Handle inputProps specifically for step, min, max attributes
+  // Instead of trying to map to slotProps (which has a different structure),
+  // we'll use InputProps.inputProps which is still supported for basic HTML attributes
+  const updatedProps = inputProps
+    ? {
+        ...rest,
+        InputProps: {
+          ...rest.InputProps,
+          inputProps: {
+            ...(rest.InputProps?.inputProps || {}),
+            ...inputProps,
+          },
+        },
+      }
+    : rest;
+
+  return (
+    <MuiTextField
+      ref={ref}
+      variant="outlined"
+      size="medium"
+      fullWidth
+      sx={{ ...baseStyles, ...sx }}
+      {...updatedProps}
+    />
+  );
 });
 
 TextField.displayName = 'TextField';
