@@ -1,0 +1,243 @@
+@import '../../assets/colors.css';
+
+.container {
+  padding: 2rem 1rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.headerBanner {
+  padding: 2rem 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 8px;
+  background: var(--gradient-primary);
+  color: var(--text-light);
+  box-shadow: var(--shadow-md);
+}
+
+.headerTitle {
+  font-size: 1.8rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.headerSubtitle {
+  font-size: 1rem;
+  text-align: center;
+  opacity: 0.9;
+}
+
+.tabsContainer {
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 1.5rem;
+}
+
+.formContainer {
+  margin-top: 1rem;
+}
+
+.sectionTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.formSection {
+  margin-bottom: 2rem;
+}
+
+.accordionHeader {
+  background-color: var(--bg-light-gray);
+}
+
+.accordionTitle {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.primaryButton {
+  background-color: var(--primary-main);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  text-transform: none;
+}
+
+.primaryButton:hover {
+  background-color: var(--primary-dark);
+}
+
+.secondaryButton {
+  background-color: transparent;
+  color: var(--primary-main);
+  border: 1px solid var(--primary-main);
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  text-transform: none;
+}
+
+.secondaryButton:hover {
+  background-color: var(--primary-lighter);
+}
+
+/* Results Tab Styles */
+.resultsSummary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 900px) {
+  .resultsSummary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .resultsSummary {
+    grid-template-columns: 1fr;
+  }
+}
+
+.summaryCard {
+  padding: 1.5rem;
+  text-align: center;
+  background: var(--gradient-card);
+  color: var(--text-light);
+  border-radius: 8px;
+  box-shadow: var(--shadow-sm);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.summaryCard:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+.cardLabel {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.9;
+}
+
+.cardValue {
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.keyInsightsPanel {
+  padding: 1.5rem;
+  background-color: var(--bg-paper);
+  border-radius: 8px;
+  border-left: 4px solid var(--primary-main);
+  margin-bottom: 2rem;
+}
+
+.insightTitle {
+  color: var(--primary-dark);
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.insightGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+@media (max-width: 900px) {
+  .insightGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .insightGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tableContainer {
+  margin: 2rem 0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.tableHeader {
+  background-color: var(--primary-main);
+}
+
+.tableHeaderCell {
+  color: var(--text-light);
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 12px 16px;
+}
+
+.yearColumn {
+  background-color: var(--secondary-dark);
+  color: var(--text-light);
+  font-weight: 600;
+}
+
+.positiveValue {
+  color: var(--success);
+  font-weight: 500;
+}
+
+.negativeValue {
+  color: var(--error);
+  font-weight: 500;
+}
+
+.methodologyCard {
+  padding: 1.5rem;
+  background-color: var(--primary-lighter);
+  border-radius: 8px;
+  margin: 2rem 0;
+}
+
+.methodologyTitle {
+  color: var(--primary-dark);
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.finalInsights {
+  padding: 1.5rem;
+  background-color: rgba(255, 179, 0, 0.1);
+  border: 1px solid rgba(255, 179, 0, 0.3);
+  border-radius: 8px;
+  margin: 2rem 0;
+}
+
+.finalInsightsTitle {
+  color: var(--secondary-dark);
+  font-weight: 600;
+  margin-bottom: 1rem;
+}

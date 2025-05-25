@@ -1,22 +1,17 @@
 import { lazy, Suspense } from 'react';
 import { RouteObject } from 'react-router-dom';
 
-const YourComponent = lazy(() => import('../features/your-component/YourComponent'));
+const BusinessAnalysis = lazy(() => import('../features/business-analysis/BusinessAnalysis'));
 
 const routesConfig: RouteObject[] = [
-  // routes will be added here
+  // Business Analysis route
   {
-    path: 'your-path',
-    children: [
-      {
-        path: 'your-module-path',
-        element: (
-          <Suspense>
-            <YourComponent />
-          </Suspense>
-        ),
-      },
-    ],
+    path: 'business-analysis',
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <BusinessAnalysis />
+      </Suspense>
+    ),
   },
 ];
 
