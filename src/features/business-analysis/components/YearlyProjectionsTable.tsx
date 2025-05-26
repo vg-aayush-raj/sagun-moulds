@@ -54,14 +54,29 @@ export function YearlyProjectionsTable({ results }: YearlyProjectionsTableProps)
                 (₹ Crores)
               </TableCell>
               <TableCell align="right" className={styles.tableHeaderCell}>
+                EMI Payment
+                <br />
+                (₹ Crores)
+              </TableCell>
+              <TableCell align="right" className={styles.tableHeaderCell}>
+                Cash Flow
+                <br />
+                (₹ Crores)
+              </TableCell>
+              <TableCell align="right" className={styles.tableHeaderCell}>
                 Profit Margin
                 <br />
                 (%)
               </TableCell>
               <TableCell align="right" className={styles.tableHeaderCell}>
-                Cumulative Profit
+                Cumulative Cash
                 <br />
                 (₹ Crores)
+              </TableCell>
+              <TableCell align="right" className={styles.tableHeaderCell}>
+                Expansion
+                <br />
+                Status
               </TableCell>
             </TableRow>
           </TableHead>
@@ -91,12 +106,36 @@ export function YearlyProjectionsTable({ results }: YearlyProjectionsTableProps)
                 >
                   ₹{projection.netProfit}
                 </TableCell>
+                <TableCell align="right" sx={{ color: 'var(--danger)' }}>
+                  ₹{projection.emiPayment || '0.00'}
+                </TableCell>
+                <TableCell
+                  align="right"
+                  className={parseFloat(projection.cashFlow || '0') >= 0 ? styles.positiveValue : styles.negativeValue}
+                >
+                  ₹{projection.cashFlow || '0.00'}
+                </TableCell>
                 <TableCell align="right">{projection.profitMargin}%</TableCell>
                 <TableCell
                   align="right"
-                  className={parseFloat(projection.cumulativeProfit) >= 0 ? styles.positiveValue : styles.negativeValue}
+                  className={
+                    parseFloat(projection.cumulativeCashFlow || '0') >= 0 ? styles.positiveValue : styles.negativeValue
+                  }
                 >
-                  ₹{projection.cumulativeProfit}
+                  ₹{projection.cumulativeCashFlow || projection.cumulativeProfit}
+                </TableCell>
+                <TableCell
+                  align="center"
+                  sx={{
+                    fontWeight: 600,
+                    color: projection.machineryAdded
+                      ? 'var(--success)'
+                      : projection.expansionPossible
+                        ? 'var(--warning)'
+                        : 'inherit',
+                  }}
+                >
+                  {projection.machineryAdded ? '✅ Expanded' : projection.expansionPossible ? '⚠️ Possible' : ''}
                 </TableCell>
               </TableRow>
             ))}

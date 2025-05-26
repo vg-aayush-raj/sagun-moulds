@@ -17,8 +17,10 @@ export function FinalInsights({ paybackPeriod }: FinalInsightsProps) {
         • Peak profitability during summer months (ice cream season)
         <br />
         • Dahi cups provide steady base demand throughout the year
-        <br />• Equipment investment recovers within {paybackPeriod} years
-        <br />• Strong cash flow generation post Year 2
+        <br />• Equipment investment recovers within {paybackPeriod}
+        <br />• Manufacturing capacity can be doubled with reinvestment of profits
+        <br />• Strategic expansion possible when sufficient cash flow is achieved
+        <br />• EMI payments accounted for in cash flow projections
       </Typography>
     </div>
   );

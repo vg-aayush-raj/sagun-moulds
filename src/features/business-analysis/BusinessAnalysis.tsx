@@ -10,11 +10,13 @@ import styles from './BusinessAnalysis.module.css';
 import { calculateAnalysisResults, AnalysisResult } from './calculations';
 
 // Import modular components
-import { BasicParametersSection } from './components/BasicParametersSection';
 import { BusinessInsights } from './components/BusinessInsights';
+import { ExpansionInsights } from './components/ExpansionInsights';
 import { FinalInsights } from './components/FinalInsights';
+import { FinancingDetailsSection } from './components/FinancingDetailsSection';
 import { FixedCostsSection } from './components/FixedCostsSection';
 import { GrowthRatesSection } from './components/GrowthRatesSection';
+import { MachineryDetailsSection } from './components/MachineryDetailsSection';
 import { MonthlyDataTable } from './components/MonthlyDataTable';
 import { PricingParametersSection } from './components/PricingParametersSection';
 import { ProductionSetupSection } from './components/ProductionSetupSection';
@@ -93,18 +95,18 @@ export default function BusinessAnalysis() {
         <Box component="form" onSubmit={methods.handleSubmit(onSubmit)} noValidate>
           <TabPanel value={tabValue} index={0}>
             <Grid container spacing={3}>
+              {' '}
               {/* Form sections */}
-              <BasicParametersSection />
+              <FinancingDetailsSection />
               <ProductionSetupSection />
-
               {/* Advanced Settings */}
               <Grid xs={12} sx={{ mt: 2 }}>
+                <MachineryDetailsSection />
                 <PricingParametersSection />
                 <FixedCostsSection />
                 <SeasonalCapacitySection />
                 <GrowthRatesSection />
               </Grid>
-
               {/* Action buttons */}
               <Grid xs={12} className={styles.buttonContainer}>
                 <Button type="submit" size="large" startIcon={<CalculateIcon />} buttonType="primary">
@@ -128,15 +130,24 @@ export default function BusinessAnalysis() {
               <>
                 <Typography variant="h5" component="h2" sx={{ mb: 3, fontWeight: 600, color: 'var(--text-primary)' }}>
                   Business Projection Summary
-                </Typography>
-
+                </Typography>{' '}
                 {/* Results sections */}
                 <ResultsSummary results={analysisResults} />
                 <BusinessInsights />
+                <ExpansionInsights
+                  expansionYear={analysisResults.expansionYear}
+                  expansionMonth={analysisResults.expansionMonth}
+                  secondExpansionYear={analysisResults.secondExpansionYear}
+                  secondExpansionMonth={analysisResults.secondExpansionMonth}
+                  thirdExpansionYear={analysisResults.thirdExpansionYear}
+                  thirdExpansionMonth={analysisResults.thirdExpansionMonth}
+                  loanClosureYear={analysisResults.loanClosureYear}
+                  loanClosureMonth={analysisResults.loanClosureMonth}
+                  monthlyEMI={analysisResults.monthlyEMI}
+                />
                 <YearlyProjectionsTable results={analysisResults} />
                 <MonthlyDataTable results={analysisResults} />
                 <FinalInsights paybackPeriod={analysisResults.paybackPeriod} />
-
                 <div className={styles.buttonContainer}>
                   <Button type="button" size="large" onClick={() => setTabValue(0)} buttonType="primary">
                     Edit Parameters

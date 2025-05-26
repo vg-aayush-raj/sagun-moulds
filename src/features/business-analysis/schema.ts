@@ -1,7 +1,26 @@
 import { z } from 'zod';
 
 export const businessAnalysisSchema = z.object({
-  initialInvestment: z.number().positive('Investment must be positive').default(3.61),
+  financingDetails: z.object({
+    totalInvestment: z.number().positive('Investment must be positive').default(3.61),
+    ownInvestment: z.number().positive('Investment must be positive').default(1.61),
+    loanAmount: z.number().nonnegative('Cannot be negative').default(2.0),
+    loanInterestRate: z.number().min(1, 'Too low').max(40, 'Too high').default(17),
+    loanPeriodYears: z.number().int().min(1, 'Too short').max(30, 'Too long').default(15),
+  }),
+  machineryDetails: z.object({
+    sheetExtrusionLine: z.number().positive('Price must be positive').default(56.4),
+    hopperLoaderMixer: z.number().positive('Price must be positive').default(4.1),
+    grinderBlower: z.number().positive('Price must be positive').default(4.8),
+    formingMachine: z.number().positive('Price must be positive').default(82.92),
+    moulds: z.number().positive('Price must be positive').default(24.0),
+    dryOffsetPrinter: z.number().positive('Price must be positive').default(73.0),
+    waterChiller: z.number().positive('Price must be positive').default(8.82),
+    airCompressor: z.number().positive('Price must be positive').default(10.41),
+    coolingTower: z.number().positive('Price must be positive').default(2.49),
+    freightLogistics: z.number().nonnegative('Cannot be negative').default(5.0),
+    gstRate: z.number().min(0, 'Cannot be negative').max(100, 'Too high').default(18),
+  }),
   productionSetup: z.object({
     thermoformingMachines: z.number().int().min(1, 'Need at least 1 machine').default(2),
     printers: z.number().int().min(1, 'Need at least 1 printer').default(4),
@@ -55,7 +74,26 @@ export const businessAnalysisSchema = z.object({
 export type BusinessAnalysisFormValues = z.infer<typeof businessAnalysisSchema>;
 
 export const defaultValues: BusinessAnalysisFormValues = {
-  initialInvestment: 3.61,
+  financingDetails: {
+    totalInvestment: 3.61,
+    ownInvestment: 1.61,
+    loanAmount: 2.0,
+    loanInterestRate: 17,
+    loanPeriodYears: 15,
+  },
+  machineryDetails: {
+    sheetExtrusionLine: 56.4,
+    hopperLoaderMixer: 4.1,
+    grinderBlower: 4.8,
+    formingMachine: 82.92,
+    moulds: 24.0,
+    dryOffsetPrinter: 73.0,
+    waterChiller: 8.82,
+    airCompressor: 10.41,
+    coolingTower: 2.49,
+    freightLogistics: 5.0,
+    gstRate: 18,
+  },
   productionSetup: {
     thermoformingMachines: 2,
     printers: 4,

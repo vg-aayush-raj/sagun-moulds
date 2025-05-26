@@ -19,15 +19,15 @@ export function BasicParametersSection() {
       <Grid container spacing={3}>
         <Grid xs={12} md={4}>
           <Controller
-            name="initialInvestment"
+            name="financingDetails.totalInvestment"
             control={control}
             render={({ field }) => (
               <TextField
                 {...field}
-                label="Initial Investment (Crores)"
+                label="Total Investment (Crores)"
                 type="number"
-                error={!!errors.initialInvestment}
-                helperText={errors.initialInvestment?.message}
+                error={!!errors.financingDetails?.totalInvestment}
+                helperText={errors.financingDetails?.totalInvestment?.message}
                 InputProps={{ inputProps: { step: 0.01 } }}
                 value={field.value ?? ''}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => field.onChange(Number(e.target.value))}

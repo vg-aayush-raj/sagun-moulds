@@ -41,6 +41,16 @@ export function MonthlyDataTable({ results }: MonthlyDataTableProps) {
                 <br />
                 (₹ Lakhs)
               </TableCell>
+              <TableCell align="right" className={styles.tableHeaderCell}>
+                EMI Payment
+                <br />
+                (₹ Lakhs)
+              </TableCell>
+              <TableCell align="right" className={styles.tableHeaderCell}>
+                Cash Flow
+                <br />
+                (After EMI)
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -64,6 +74,17 @@ export function MonthlyDataTable({ results }: MonthlyDataTableProps) {
                   className={parseFloat(month.netProfit) >= 0 ? styles.positiveValue : styles.negativeValue}
                 >
                   ₹{month.netProfit}
+                </TableCell>
+                <TableCell align="right" sx={{ color: 'var(--danger)' }}>
+                  ₹{month.emiPayment || '0.00'}
+                </TableCell>
+                <TableCell
+                  align="right"
+                  className={
+                    parseFloat(month.cashFlowAfterEMI || '0') >= 0 ? styles.positiveValue : styles.negativeValue
+                  }
+                >
+                  ₹{month.cashFlowAfterEMI || '0.00'}
                 </TableCell>
               </TableRow>
             ))}

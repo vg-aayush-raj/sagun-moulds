@@ -1,10 +1,14 @@
 import { Stack, Typography } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
 import styles from '../BusinessAnalysis.module.css';
+import { calculateEMI } from '../calculations';
 import { BusinessAnalysisFormValues } from '../schema';
 
 export function BusinessInsights() {
   const { getValues } = useFormContext<BusinessAnalysisFormValues>();
+
+  const loanDetails = getValues().financingDetails;
+  const monthlyEMI = calculateEMI(loanDetails.loanAmount, loanDetails.loanInterestRate, loanDetails.loanPeriodYears);
 
   return (
     <>
@@ -14,6 +18,17 @@ export function BusinessInsights() {
           🔍 Key Business Assumptions
         </Typography>
         <div className={styles.insightGrid}>
+          <div>
+            <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
+              Financing Structure:
+            </Typography>
+            <Typography variant="body2">
+              • Own Investment: ₹{loanDetails.ownInvestment.toFixed(2)} Crores
+              <br />• Loan Amount: ₹{loanDetails.loanAmount.toFixed(2)} Crores
+              <br />• Interest Rate: {loanDetails.loanInterestRate}% over {loanDetails.loanPeriodYears} years
+              <br />• Monthly EMI: ₹{monthlyEMI.toLocaleString()}
+            </Typography>
+          </div>
           <div>
             <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
               Production Setup:
