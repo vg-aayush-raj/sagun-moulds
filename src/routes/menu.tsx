@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
+import FactoryIcon from '@mui/icons-material/Factory';
 import HomeIcon from '@mui/icons-material/Home';
 import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import { NavLink } from 'react-router-dom';
@@ -44,6 +45,7 @@ export default function Menu() {
       <List sx={{ py: 0 }}>
         <MenuItem to="/" icon={<HomeIcon />} text="Home" />
         <MenuItem to="/business-analysis" icon={<BusinessCenterIcon />} text="Business Analysis" />
+        <MenuItem to="/minimum-sales-support-price" icon={<FactoryIcon />} text="Minimum Sales Support Price" />
       </List>
     </Box>
   );

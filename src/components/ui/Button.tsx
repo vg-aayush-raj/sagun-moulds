@@ -5,11 +5,18 @@ import { Button as MuiButton, ButtonProps as MuiButtonProps, SxProps, Theme } fr
 const primaryStyles: SxProps<Theme> = {
   backgroundColor: 'var(--primary-main)',
   color: 'white',
-  fontWeight: 500,
+  fontWeight: 600,
   textTransform: 'none',
-  borderRadius: '4px',
+  borderRadius: '8px',
+  boxShadow: '0 2px 8px rgba(44, 108, 176, 0.3)',
+  transition: 'all 0.2s ease-in-out',
   '&:hover': {
     backgroundColor: 'var(--primary-dark)',
+    boxShadow: '0 4px 12px rgba(44, 108, 176, 0.4)',
+    transform: 'translateY(-1px)',
+  },
+  '&:active': {
+    transform: 'translateY(0)',
   },
 };
 
@@ -17,12 +24,21 @@ const secondaryStyles: SxProps<Theme> = {
   backgroundColor: 'transparent',
   color: 'var(--primary-main)',
   borderColor: 'var(--primary-main)',
-  fontWeight: 500,
+  borderWidth: '2px',
+  fontWeight: 600,
   textTransform: 'none',
-  borderRadius: '4px',
+  borderRadius: '8px',
+  transition: 'all 0.2s ease-in-out',
   '&:hover': {
-    backgroundColor: 'var(--primary-lighter)',
+    backgroundColor: 'var(--primary-main)',
     borderColor: 'var(--primary-main)',
+    color: 'white',
+    borderWidth: '2px',
+    transform: 'translateY(-1px)',
+    boxShadow: '0 4px 12px rgba(44, 108, 176, 0.3)',
+  },
+  '&:active': {
+    transform: 'translateY(0)',
   },
 };
 
