@@ -33,8 +33,52 @@ export type MinimumSalesSupportPriceFormValues = z.infer<typeof minimumSalesSupp
 
 // Default values
 export const defaultValues: MinimumSalesSupportPriceFormValues = {
-  expenses: [],
-  cupTypes: [],
+  expenses: [
+    {
+      id: '1',
+      name: 'Rent',
+      amount: 121000,
+      description: 'Monthly office/factory rent',
+    },
+    {
+      id: '2',
+      name: 'Electricity',
+      amount: 280000,
+      description: 'Monthly electricity bill',
+    },
+    {
+      id: '3',
+      name: 'Employee',
+      amount: 230000,
+      description: 'Employee salaries and benefits',
+    },
+    {
+      id: '4',
+      name: 'EMI',
+      amount: 300000,
+      description: 'Equipment/loan EMI',
+    },
+  ],
+  cupTypes: [
+    {
+      id: '1',
+      name: 'Delicious 35 ml',
+      monthlyProduction: 2600000,
+      rawMaterialPricePerKg: 131,
+      cupWeightInGrams: 1,
+      sellingPricePerCup: 0.34,
+      description: '35ml disposable cup',
+    },
+    {
+      id: '2',
+      name: 'Delicious 70 ml',
+      monthlyProduction: 2600000,
+      rawMaterialPricePerKg: 131,
+      cupWeightInGrams: 1.5,
+      sellingPricePerCup: 0.48,
+      description: '70ml disposable cup',
+    },
+  ],
 };
 
 // Helper function to create a new expense entry
