@@ -1,0 +1,300 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.viewToggle {
+  display: flex;
+  gap: 0.5rem;
+  background: #f1f5f9;
+  padding: 0.25rem;
+  border-radius: 8px;
+  width: fit-content;
+}
+
+.toggleButton {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #64748b;
+  transition: all 0.2s ease;
+}
+
+.toggleButton:hover {
+  background: #e2e8f0;
+  color: #334155;
+}
+
+.toggleButton.active {
+  background: #3b82f6;
+  color: white;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+}
+
+.summarySection,
+.perCupSection,
+.detailSection,
+.rawMaterialSection,
+.costBreakdownSection {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.cupSection {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.cupTitle {
+  color: #1e293b;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+}
+
+.summarySection h3,
+.perCupSection h3,
+.detailSection h3,
+.rawMaterialSection h3,
+.costBreakdownSection h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.summaryCard {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.summaryCard small {
+  font-size: 0.75rem;
+  color: #6b7280;
+  display: block;
+  margin-top: 0.25rem;
+}
+
+.summaryCard h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.summaryCard h5 {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.amount {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.positive {
+  color: #059669 !important;
+}
+
+.negative {
+  color: #dc2626 !important;
+}
+
+.tableContainer {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.resultsTable {
+  width: 100%;
+  min-width: 1200px;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.resultsTable th {
+  background: #f8fafc;
+  border-bottom: 2px solid #e2e8f0;
+  padding: 0.5rem;
+  text-align: left;
+  font-weight: 600;
+  color: #374151;
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.resultsTable td {
+  border-bottom: 1px solid #f1f5f9;
+  padding: 0.5rem;
+  white-space: nowrap;
+  font-size: 0.75rem;
+}
+
+.resultsTable tr:hover {
+  background: #f8fafc;
+}
+
+.cupName {
+  font-weight: 600;
+  color: #1e293b;
+  max-width: 150px;
+  white-space: normal;
+}
+
+.finalPrice {
+  font-weight: 700;
+  color: #059669;
+}
+
+.highlight {
+  background: #fef3c7;
+  color: #92400e;
+  font-weight: 600;
+}
+
+.gstCredit {
+  color: #059669;
+  font-weight: 600;
+}
+
+.rawMaterialSection {
+  background: #fef7ff;
+  border-color: #d946ef;
+}
+
+.rawMaterialSection h3 {
+  color: #86198f;
+}
+
+.costBreakdownSection {
+  background: #fefce8;
+  border-color: #eab308;
+}
+
+.costBreakdownSection h3 {
+  color: #a16207;
+}
+
+.gstSection {
+  background: #f0fdf4;
+  border: 1px solid #22c55e;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.gstSection h3 {
+  color: #15803d;
+}
+
+.gstCard {
+  background: white;
+  border: 1px solid #d1fae5;
+  border-radius: 6px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.gstCard h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #047857;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.gstCard small {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.highlight {
+  background-color: #fef3c7 !important;
+  font-weight: 700 !important;
+}
+
+.gstCredit {
+  color: #059669 !important;
+  font-weight: 600;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .viewToggle {
+    width: 100%;
+  }
+
+  .toggleButton {
+    flex: 1;
+    text-align: center;
+  }
+
+  .tableContainer {
+    font-size: 0.75rem;
+  }
+
+  .resultsTable th,
+  .resultsTable td {
+    padding: 0.5rem;
+  }
+
+  .summaryCard {
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    gap: 1rem;
+  }
+
+  .summarySection,
+  .perCupSection,
+  .detailSection,
+  .rawMaterialSection,
+  .costBreakdownSection {
+    padding: 1rem;
+  }
+
+  .tableContainer {
+    font-size: 0.7rem;
+  }
+
+  .resultsTable th,
+  .resultsTable td {
+    padding: 0.375rem;
+  }
+}

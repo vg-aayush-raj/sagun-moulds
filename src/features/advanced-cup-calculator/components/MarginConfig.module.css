@@ -1,0 +1,87 @@
+.container {
+  background: #f0fdf4;
+  border: 1px solid #22c55e;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.section {
+  margin-bottom: 1.5rem;
+}
+
+.sectionTitle {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #15803d;
+  margin: 0 0 0.5rem 0;
+}
+
+.sectionDescription {
+  color: #475569;
+  margin: 0 0 1.5rem 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.pricingFlow {
+  background: white;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-top: 1.5rem;
+}
+
+.pricingFlow h4 {
+  color: #334155;
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+}
+
+.flowSteps {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.stepNumber {
+  background: #3b82f6;
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.arrow {
+  font-size: 1.2rem;
+  color: #64748b;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .flowSteps {
+    align-items: stretch;
+  }
+
+  .step {
+    max-width: none;
+  }
+}

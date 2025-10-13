@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
+import CalculateIcon from '@mui/icons-material/Calculate';
 import FactoryIcon from '@mui/icons-material/Factory';
 import HomeIcon from '@mui/icons-material/Home';
 import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
@@ -46,6 +47,7 @@ export default function Menu() {
         <MenuItem to="/" icon={<HomeIcon />} text="Home" />
         <MenuItem to="/business-analysis" icon={<BusinessCenterIcon />} text="Business Analysis" />
         <MenuItem to="/minimum-sales-support-price" icon={<FactoryIcon />} text="Minimum Sales Support Price" />
+        <MenuItem to="/advanced-cup-calculator" icon={<CalculateIcon />} text="Advanced Cup Calculator" />
       </List>
     </Box>
   );
