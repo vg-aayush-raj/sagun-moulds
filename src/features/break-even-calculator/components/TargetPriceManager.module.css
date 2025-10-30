@@ -1,0 +1,39 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.priceCard {
+  background: #fff9f0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  border: 1px solid #ffd9a3;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.cardHeader h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+  background: #fff9f0;
+  border-radius: 8px;
+  border: 2px dashed #ffb366;
+}
+
+.emptyState p {
+  margin: 0;
+}

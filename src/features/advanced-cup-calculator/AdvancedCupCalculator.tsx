@@ -45,18 +45,30 @@ const AdvancedCupCalculator: React.FC = () => {
     name: 'cupTypes',
   });
 
-  const watchedValues = watch();
+  // Watch specific fields instead of all values to prevent unnecessary re-renders
+  const expenses = watch('expenses');
+  const cupTypes = watch('cupTypes');
+  const logisticsConfig = watch('logisticsConfig');
+  const marginConfig = watch('marginConfig');
+  const workingDaysConfig = watch('workingDaysConfig');
 
-  // Auto-calculate when values change
+  // Auto-calculate when specific values change
   useEffect(() => {
     try {
-      const calculatedResults = calculateAdvancedCupCalculator(watchedValues);
+      const formValues: AdvancedCupCalculatorFormValues = {
+        expenses,
+        cupTypes,
+        logisticsConfig,
+        marginConfig,
+        workingDaysConfig,
+      };
+      const calculatedResults = calculateAdvancedCupCalculator(formValues);
       setResults(calculatedResults);
     } catch (error) {
       console.error('Calculation error:', error);
       setResults(null);
     }
-  }, [watchedValues]);
+  }, [expenses, cupTypes, logisticsConfig, marginConfig, workingDaysConfig]);
 
   const onSubmit = (data: AdvancedCupCalculatorFormValues) => {
     try {
