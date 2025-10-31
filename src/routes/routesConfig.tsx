@@ -5,6 +5,7 @@ const BusinessAnalysis = lazy(() => import('../features/business-analysis/Busine
 const MinimumSalesSupportPrice = lazy(() => import('../features/minimum-sales-support-price/MinimumSalesSupportPrice'));
 const AdvancedCupCalculator = lazy(() => import('../features/advanced-cup-calculator/AdvancedCupCalculator'));
 const BreakEvenCalculator = lazy(() => import('../features/break-even-calculator/BreakEvenCalculator'));
+const CupPriceCalculator = lazy(() => import('../features/cup-price-calculator/CupPriceCalculator'));
 
 const routesConfig: RouteObject[] = [
   // Business Analysis route
@@ -40,6 +41,15 @@ const routesConfig: RouteObject[] = [
     element: (
       <Suspense fallback={<div>Loading...</div>}>
         <BreakEvenCalculator />
+      </Suspense>
+    ),
+  },
+  // Cup Price Calculator route
+  {
+    path: 'cup-price-calculator',
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <CupPriceCalculator />
       </Suspense>
     ),
   },

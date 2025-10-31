@@ -1,0 +1,45 @@
+.container {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.header {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.headerTitle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: #2c6cb0;
+}
+
+.headerSubtitle {
+  margin-top: 0.5rem;
+  color: #666;
+}
+
+.tabsContainer {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+@media (max-width: 600px) {
+  .buttonContainer {
+    flex-direction: column;
+  }
+
+  .buttonContainer button {
+    width: 100%;
+  }
+}

@@ -1,0 +1,67 @@
+.section {
+  margin-bottom: 2rem;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.sectionTitle {
+  font-weight: 600;
+  color: #2c6cb0;
+}
+
+.entryCard {
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid #2c6cb0;
+  transition: all 0.2s ease-in-out;
+}
+
+.entryCard:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.entryHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.entryTitle {
+  font-weight: 600;
+  color: #333;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.formField {
+  width: 100%;
+}
+
+.emptyState {
+  padding: 3rem;
+  text-align: center;
+  background-color: #f9f9f9;
+}
+
+@media (max-width: 600px) {
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+
+  .sectionHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}
