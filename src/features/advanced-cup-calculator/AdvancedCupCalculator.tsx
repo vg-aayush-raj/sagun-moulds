@@ -74,6 +74,7 @@ const AdvancedCupCalculator: React.FC = () => {
     try {
       const calculatedResults = calculateAdvancedCupCalculator(data);
       setResults(calculatedResults);
+      setActiveTab(5); // Switch to results tab
     } catch (error) {
       console.error('Calculation error:', error);
     }

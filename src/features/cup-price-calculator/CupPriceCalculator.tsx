@@ -46,19 +46,28 @@ export default function CupPriceCalculator() {
     name: 'gstRates',
   });
 
-  // Watch all form values for auto-calculation
-  const formValues = watch();
+  // Watch specific fields instead of all values to prevent unnecessary re-renders
+  const expenses = watch('expenses');
+  const monthlyProduction = watch('monthlyProduction');
+  const rawMaterialConfig = watch('rawMaterialConfig');
+  const gstRates = watch('gstRates');
 
   // Auto-calculate when form values change
   useEffect(() => {
     try {
+      const formValues: CupPriceCalculatorFormValues = {
+        expenses,
+        monthlyProduction,
+        rawMaterialConfig,
+        gstRates,
+      };
       const calculatedResults = calculateCupPrice(formValues);
       setResults(calculatedResults);
     } catch (error) {
       console.error('Calculation error:', error);
       setResults(null);
     }
-  }, [formValues]);
+  }, [expenses, monthlyProduction, rawMaterialConfig, gstRates]);
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);

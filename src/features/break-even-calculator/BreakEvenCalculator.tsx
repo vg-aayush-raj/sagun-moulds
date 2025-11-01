@@ -89,6 +89,7 @@ const BreakEvenCalculator: React.FC = () => {
     try {
       const calculatedResults = calculateBreakEven(data);
       setResults(calculatedResults);
+      setActiveTab(4); // Switch to results tab
     } catch (error) {
       console.error('Calculation error:', error);
     }
