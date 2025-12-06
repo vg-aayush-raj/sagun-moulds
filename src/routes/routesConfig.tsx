@@ -6,6 +6,10 @@ const MinimumSalesSupportPrice = lazy(() => import('../features/minimum-sales-su
 const AdvancedCupCalculator = lazy(() => import('../features/advanced-cup-calculator/AdvancedCupCalculator'));
 const BreakEvenCalculator = lazy(() => import('../features/break-even-calculator/BreakEvenCalculator'));
 const CupPriceCalculator = lazy(() => import('../features/cup-price-calculator/CupPriceCalculator'));
+const RawMaterialManagement = lazy(() => import('../features/raw-material-management/RawMaterialManagement'));
+const Invoicing = lazy(() => import('../features/invoicing/Invoicing'));
+const CompanyManagement = lazy(() => import('../features/company-management/CompanyManagement'));
+const ProformaManagement = lazy(() => import('../features/proforma-management/ProformaManagement'));
 
 const routesConfig: RouteObject[] = [
   // Business Analysis route
@@ -50,6 +54,42 @@ const routesConfig: RouteObject[] = [
     element: (
       <Suspense fallback={<div>Loading...</div>}>
         <CupPriceCalculator />
+      </Suspense>
+    ),
+  },
+  // Raw Material Management route
+  {
+    path: 'raw-materials',
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <RawMaterialManagement />
+      </Suspense>
+    ),
+  },
+  // Invoicing route
+  {
+    path: 'invoicing',
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <Invoicing />
+      </Suspense>
+    ),
+  },
+  // Company Management route
+  {
+    path: 'companies',
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <CompanyManagement />
+      </Suspense>
+    ),
+  },
+  // Proforma Management route
+  {
+    path: 'proforma',
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <ProformaManagement />
       </Suspense>
     ),
   },

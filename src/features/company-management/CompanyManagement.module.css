@@ -1,0 +1,23 @@
+.container {
+  padding: 24px;
+}
+
+.header {
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  color: var(--primary-main);
+}
+
+.cardContainer {
+  margin-bottom: 24px;
+}
+
+.grid {
+  height: 600px;
+  width: 100%;
+}
