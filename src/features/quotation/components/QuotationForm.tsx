@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Add as AddIcon, Delete as DeleteIcon, Business as BusinessIcon } from '@mui/icons-material';
 import {
@@ -53,35 +53,28 @@ export default function QuotationForm({ onSuccess }: QuotationFormProps) {
       },
       items: [{ sn: 1, description: '', quantity: 1, unit: 'Boxes', rate: 0, amount: 0 }],
       terms_conditions: DEFAULT_TERMS,
-      gst: '',
+      gst_type: 'As Applicable',
+      gst_value: undefined,
       remarks: '',
     },
   });
 
   const { fields, append, remove } = useFieldArray({ control, name: 'items' });
   const watchItems = watch('items');
-  const watchGst = watch('gst');
-
-  // Auto-calculate amount for each item
-  useEffect(() => {
-    watchItems.forEach((item, index) => {
-      const amount = item.quantity * item.rate;
-      if (item.amount !== amount) {
-        setValue(`items.${index}.amount`, amount, { shouldValidate: false });
-      }
-    });
-  }, [watchItems, setValue]);
+  const watchGstType = watch('gst_type');
+  const watchGstValue = watch('gst_value');
 
   const calculateSubtotal = () => {
-    return watchItems.reduce((sum, item) => sum + item.amount, 0);
+    return watchItems.reduce((sum, item) => sum + (item.quantity || 0) * (item.rate || 0), 0);
   };
 
   const calculateGST = () => {
     const subtotal = calculateSubtotal();
-    if (!watchGst || watchGst === 'As Applicable') return null;
-    const gstRate = parseFloat(watchGst);
-    if (isNaN(gstRate)) return null;
-    return (subtotal * gstRate) / 100;
+    if (watchGstType === 'Custom' && watchGstValue !== undefined) {
+      const gstRate = watchGstValue;
+      return (subtotal * gstRate) / 100;
+    }
+    return null;
   };
 
   const calculateTotal = () => {
@@ -106,17 +99,24 @@ export default function QuotationForm({ onSuccess }: QuotationFormProps) {
   };
 
   const onSubmit = async (data: QuotationFormData) => {
+    if (!data.company_id) {
+      setError('Please select a company');
+      return;
+    }
     setLoading(true);
     setError(null);
 
     try {
       // Ensure quotation_date is a string
+      const gst = data.gst_type === 'Custom' ? data.gst_value?.toString() : 'As Applicable';
       const submitData = {
         ...data,
+        gst,
         quotation_date:
           typeof data.quotation_date === 'string'
             ? data.quotation_date
             : data.quotation_date.toISOString().split('T')[0],
+        items: data.items.map((item) => ({ ...item, amount: item.quantity * item.rate })),
       };
 
       await quotationApi.create(submitData);
@@ -134,7 +134,8 @@ export default function QuotationForm({ onSuccess }: QuotationFormProps) {
         },
         items: [{ sn: 1, description: '', quantity: 1, unit: 'Boxes', rate: 0, amount: 0 }],
         terms_conditions: DEFAULT_TERMS,
-        gst: '',
+        gst_type: 'As Applicable',
+        gst_value: undefined,
         remarks: '',
       });
       onSuccess();
@@ -167,13 +168,16 @@ export default function QuotationForm({ onSuccess }: QuotationFormProps) {
           </Typography>
           <Grid container spacing={2}>
             <Grid size={{ xs: 12 }}>
+              <Typography variant="body1" sx={{ mb: 1, fontWeight: 'bold' }}>
+                Company Name
+              </Typography>
               <Controller
                 name="from.company_name"
                 control={control}
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    label="Company Name"
+                    label=""
                     fullWidth
                     required
                     error={!!errors.from?.company_name}
@@ -184,13 +188,16 @@ export default function QuotationForm({ onSuccess }: QuotationFormProps) {
               />
             </Grid>
             <Grid size={{ xs: 12 }}>
+              <Typography variant="body1" sx={{ mb: 1, fontWeight: 'bold' }}>
+                Address
+              </Typography>
               <Controller
                 name="from.address"
                 control={control}
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    label="Address"
+                    label=""
                     fullWidth
                     required
                     multiline
@@ -203,22 +210,28 @@ export default function QuotationForm({ onSuccess }: QuotationFormProps) {
               />
             </Grid>
             <Grid size={{ xs: 12, md: 4 }}>
+              <Typography variant="body1" sx={{ mb: 1, fontWeight: 'bold' }}>
+                Contact Number
+              </Typography>
               <Controller
                 name="from.contact"
                 control={control}
                 render={({ field }) => (
-                  <TextField {...field} label="Contact Number" fullWidth sx={{ bgcolor: 'white', borderRadius: 1 }} />
+                  <TextField {...field} label="" fullWidth sx={{ bgcolor: 'white', borderRadius: 1 }} />
                 )}
               />
             </Grid>
             <Grid size={{ xs: 12, md: 4 }}>
+              <Typography variant="body1" sx={{ mb: 1, fontWeight: 'bold' }}>
+                Email
+              </Typography>
               <Controller
                 name="from.email"
                 control={control}
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    label="Email"
+                    label=""
                     fullWidth
                     type="email"
                     error={!!errors.from?.email}
@@ -229,13 +242,16 @@ export default function QuotationForm({ onSuccess }: QuotationFormProps) {
               />
             </Grid>
             <Grid size={{ xs: 12, md: 4 }}>
+              <Typography variant="body1" sx={{ mb: 1, fontWeight: 'bold' }}>
+                GSTIN
+              </Typography>
               <Controller
                 name="from.gstin"
                 control={control}
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    label="GSTIN"
+                    label=""
                     fullWidth
                     error={!!errors.from?.gstin}
                     helperText={errors.from?.gstin?.message}
@@ -459,7 +475,7 @@ export default function QuotationForm({ onSuccess }: QuotationFormProps) {
                   <TextField
                     label="Amount (₹)"
                     fullWidth
-                    value={watchItems[index]?.amount?.toFixed(2) || '0.00'}
+                    value={((watchItems[index]?.quantity || 0) * (watchItems[index]?.rate || 0)).toFixed(2)}
                     InputProps={{ readOnly: true }}
                     sx={{ bgcolor: '#e3f2fd' }}
                   />
@@ -479,20 +495,44 @@ export default function QuotationForm({ onSuccess }: QuotationFormProps) {
           <Grid container spacing={3}>
             <Grid size={{ xs: 12, md: 4 }}>
               <Controller
-                name="gst"
+                name="gst_type"
                 control={control}
                 render={({ field }) => (
-                  <TextField
-                    {...field}
-                    label="GST (% or 'As Applicable')"
-                    fullWidth
-                    placeholder="e.g., 18 or As Applicable"
-                    helperText="Enter GST percentage or type 'As Applicable'"
-                  />
+                  <TextField {...field} select label="GST Type" fullWidth>
+                    <MenuItem value="As Applicable">As Applicable</MenuItem>
+                    <MenuItem value="Custom">GST Percentage</MenuItem>
+                  </TextField>
                 )}
               />
             </Grid>
-            <Grid size={{ xs: 12, md: 8 }}>
+            {watchGstType === 'Custom' && (
+              <Grid size={{ xs: 12, md: 4 }}>
+                <Controller
+                  name="gst_value"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      type="number"
+                      label="GST (%)"
+                      fullWidth
+                      inputProps={{ min: 0, max: 100, step: 0.01 }}
+                      onChange={(e) => field.onChange(parseFloat(e.target.value) || undefined)}
+                      sx={{
+                        '& input[type=number]::-webkit-inner-spin-button, & input[type=number]::-webkit-outer-spin-button':
+                          {
+                            display: 'none',
+                          },
+                        '& input[type=number]': {
+                          MozAppearance: 'textfield',
+                        },
+                      }}
+                    />
+                  )}
+                />
+              </Grid>
+            )}
+            <Grid size={{ xs: 12, md: watchGstType === 'Custom' ? 4 : 8 }}>
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, p: 2, bgcolor: '#f5f5f5', borderRadius: 1 }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                   <Typography variant="body1">Subtotal:</Typography>
@@ -502,13 +542,13 @@ export default function QuotationForm({ onSuccess }: QuotationFormProps) {
                 </Box>
                 {calculateGST() !== null && (
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', color: '#f57c00' }}>
-                    <Typography variant="body1">GST ({watchGst}%):</Typography>
+                    <Typography variant="body1">GST ({watchGstValue}%):</Typography>
                     <Typography variant="body1" fontWeight="bold">
                       ₹ {calculateGST()?.toFixed(2)}
                     </Typography>
                   </Box>
                 )}
-                {watchGst === 'As Applicable' && (
+                {watchGstType === 'As Applicable' && (
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', color: '#1976d2' }}>
                     <Typography variant="body2" fontStyle="italic">
                       GST: As Applicable
@@ -580,7 +620,13 @@ export default function QuotationForm({ onSuccess }: QuotationFormProps) {
 
       {/* Submit Button */}
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-        <Button type="submit" variant="contained" size="large" disabled={loading} sx={{ minWidth: 200 }}>
+        <Button
+          type="submit"
+          variant="contained"
+          size="large"
+          disabled={loading || !watch('company_id') || (watchGstType === 'Custom' && watchGstValue === undefined)}
+          sx={{ minWidth: 200 }}
+        >
           {loading ? 'Creating...' : 'Create Quotation'}
         </Button>
       </Box>
