@@ -1,0 +1,11 @@
+.container {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.title {
+  margin-bottom: 24px;
+  color: #1976d2;
+  font-weight: 600;
+}

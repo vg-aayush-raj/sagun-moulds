@@ -10,6 +10,7 @@ const RawMaterialManagement = lazy(() => import('../features/raw-material-manage
 const Invoicing = lazy(() => import('../features/invoicing/Invoicing'));
 const CompanyManagement = lazy(() => import('../features/company-management/CompanyManagement'));
 const ProformaManagement = lazy(() => import('../features/proforma-management/ProformaManagement'));
+const Quotation = lazy(() => import('../features/quotation/Quotation'));
 
 const routesConfig: RouteObject[] = [
   // Business Analysis route
@@ -90,6 +91,15 @@ const routesConfig: RouteObject[] = [
     element: (
       <Suspense fallback={<div>Loading...</div>}>
         <ProformaManagement />
+      </Suspense>
+    ),
+  },
+  // Quotation route
+  {
+    path: 'quotation',
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <Quotation />
       </Suspense>
     ),
   },
