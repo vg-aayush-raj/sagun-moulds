@@ -57,6 +57,8 @@ export const DEFAULT_TERMS = `1. Payment Terms:
 
 4. The above prices are ex-factory. Any requested changes will be subject to price revision.
 
-5. Prices are subject to change based on fluctuations in raw material costs.`;
+5. Prices are subject to change based on fluctuations in raw material costs.
+
+6. Delivery will be made as per mutually agreed customer demand.`;
 
 export const UNIT_OPTIONS = ['Boxes', 'Lakhs', 'Nos', 'Kgs', 'Pcs', 'Sets', 'Dozens', 'Rolls', 'Meters'];
