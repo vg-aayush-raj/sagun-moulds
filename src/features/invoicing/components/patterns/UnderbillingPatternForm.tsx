@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import {
   Box,
@@ -65,27 +65,17 @@ export default function UnderbillingPatternForm({ onSubmit, onCancel, loading }:
   const { fields, append, remove } = useFieldArray({ control, name: 'items' });
   const watchItems = watch('items');
 
-  const calculateTotals = () => {
-    let agreedTotal = 0;
-    let billedBase = 0;
-    let gstAmount = 0;
-    let cashAmount = 0;
+  // Calculate warnings in useEffect to avoid infinite loop
+  useEffect(() => {
     const itemWarnings: string[] = [];
 
     watchItems.forEach((item, index) => {
       const agreed = item.quantity * item.agreed_price_per_cup;
-      const billedBase_ = item.quantity * item.billed_price_per_cup;
-      const gst = (billedBase_ * item.gst_rate) / 100;
-      const cash = agreed - (billedBase_ + gst);
+      const billedBase = item.quantity * item.billed_price_per_cup;
+      const gst = (billedBase * item.gst_rate) / 100;
 
-      agreedTotal += agreed;
-      billedBase += billedBase_;
-      gstAmount += gst;
-      cashAmount += cash;
-
-      // Calculate underbilling percentage
       if (agreed > 0) {
-        const underbillingPct = ((agreed - (billedBase_ + gst)) / agreed) * 100;
+        const underbillingPct = ((agreed - (billedBase + gst)) / agreed) * 100;
         if (underbillingPct > 30) {
           itemWarnings.push(
             `${item.cup_type || `Item ${index + 1}`}: ${underbillingPct.toFixed(1)}% underbilling (>${30}% threshold)`,
@@ -95,6 +85,25 @@ export default function UnderbillingPatternForm({ onSubmit, onCancel, loading }:
     });
 
     setWarnings(itemWarnings);
+  }, [watchItems]);
+
+  const calculateTotals = () => {
+    let agreedTotal = 0;
+    let billedBase = 0;
+    let gstAmount = 0;
+    let cashAmount = 0;
+
+    watchItems.forEach((item) => {
+      const agreed = item.quantity * item.agreed_price_per_cup;
+      const billedBase_ = item.quantity * item.billed_price_per_cup;
+      const gst = (billedBase_ * item.gst_rate) / 100;
+      const cash = agreed - (billedBase_ + gst);
+
+      agreedTotal += agreed;
+      billedBase += billedBase_;
+      gstAmount += gst;
+      cashAmount += cash;
+    });
 
     return {
       agreedTotal,

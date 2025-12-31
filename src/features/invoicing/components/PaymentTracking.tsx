@@ -9,7 +9,6 @@ import {
   DialogContent,
   DialogActions,
   TextField,
-  Grid,
   Typography,
   MenuItem,
   Alert,
@@ -21,21 +20,16 @@ import {
   TableRow,
   Paper,
   Chip,
-  IconButton,
   Tabs,
   Tab,
   Autocomplete,
+  Grid,
 } from '@mui/material';
-import {
-  Add as AddIcon,
-  Delete as DeleteIcon,
-  Payment as PaymentIcon,
-  Receipt as ReceiptIcon,
-} from '@mui/icons-material';
+import { Payment as PaymentIcon, Receipt as ReceiptIcon } from '@mui/icons-material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useForm, Controller } from 'react-hook-form';
 import { useAppContext } from '../../../context/AppContext';
-import { invoiceApi, PaymentMethod, PaymentType, PaymentRecord, Invoice } from '../../../api/invoiceApi';
+import { invoiceApi, PaymentMethod, PaymentType, PaymentRecord, Invoice, PaymentStatus } from '../../../api/invoiceApi';
 import {
   formatCurrency,
   formatDate,
@@ -120,20 +114,20 @@ export default function PaymentTracking({ companyId }: PaymentTrackingProps) {
 
     try {
       // Load unpaid/partially paid invoices
-      const invoiceList = await invoiceApi.listInvoices({
+      const response = await invoiceApi.listInvoices({
         company_id: selectedCompany,
-        payment_status: ['UNPAID', 'PARTIALLY_PAID'],
+        payment_status: [PaymentStatus.UNPAID, PaymentStatus.PARTIALLY_PAID],
       });
-      setInvoices(invoiceList);
+      setInvoices(response.invoices || []);
 
       // Load dues summary
       const dues = await invoiceApi.getCompanyDues(selectedCompany);
       setDuesSummary(dues);
 
       // Load recent payments if an invoice is selected
-      if (invoiceList.length > 0) {
-        const recentPayments = await invoiceApi.getPaymentHistory(invoiceList[0].id);
-        setPayments(recentPayments);
+      if (response.invoices && response.invoices.length > 0) {
+        const paymentHistory = await invoiceApi.getPaymentHistory(response.invoices[0].id);
+        setPayments(paymentHistory.payments);
       }
     } catch (err: any) {
       setError(err.response?.data?.error || 'Failed to load data');
@@ -175,12 +169,16 @@ export default function PaymentTracking({ companyId }: PaymentTrackingProps) {
 
     try {
       await invoiceApi.recordMultiInvoicePayment({
-        invoice_ids: data.selected_invoices,
-        amount: data.amount,
+        company_id: selectedCompany!,
+        total_amount: data.amount,
         payment_date: data.payment_date,
         payment_method: data.payment_method,
         reference_number: data.reference_number,
         notes: data.notes,
+        allocations: data.selected_invoices.map((invoiceId) => ({
+          invoice_id: invoiceId,
+          amount: 0, // Will be calculated by FIFO in backend
+        })),
       });
 
       setSuccess('Multi-invoice payment recorded successfully');

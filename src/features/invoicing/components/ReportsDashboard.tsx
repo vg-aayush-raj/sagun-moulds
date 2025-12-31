@@ -236,7 +236,7 @@ export default function ReportsDashboard() {
                         Total Cash Inflow
                       </Typography>
                       <Typography variant="h4" color="success.main">
-                        {formatCurrency(cashInflowReport.total_cash)}
+                        {formatCurrency(cashInflowReport.total_cash_collected)}
                       </Typography>
                     </CardContent>
                   </Card>
@@ -247,7 +247,9 @@ export default function ReportsDashboard() {
                       <Typography variant="body2" color="text.secondary">
                         Total Transactions
                       </Typography>
-                      <Typography variant="h4">{cashInflowReport.transaction_count}</Typography>
+                      <Typography variant="h4">
+                        {cashInflowReport.by_pattern?.reduce((sum: number, p: any) => sum + p.invoice_count, 0) || 0}
+                      </Typography>
                     </CardContent>
                   </Card>
                 </Grid>
@@ -286,10 +288,10 @@ export default function ReportsDashboard() {
                             </TableCell>
                             <TableCell align="right">
                               <Typography variant="body1" fontWeight="medium">
-                                {formatCurrency(item.cash_amount)}
+                                {formatCurrency(item.total_cash)}
                               </Typography>
                             </TableCell>
-                            <TableCell align="right">{item.count}</TableCell>
+                            <TableCell align="right">{item.invoice_count}</TableCell>
                           </TableRow>
                         ))}
                       </TableBody>
@@ -349,7 +351,7 @@ export default function ReportsDashboard() {
                         Total Bank Payments
                       </Typography>
                       <Typography variant="h4" color="primary">
-                        {formatCurrency(bankPaymentReport.total_amount)}
+                        {formatCurrency(bankPaymentReport.total_bank_payments)}
                       </Typography>
                     </CardContent>
                   </Card>
@@ -360,7 +362,10 @@ export default function ReportsDashboard() {
                       <Typography variant="body2" color="text.secondary">
                         Total Payments
                       </Typography>
-                      <Typography variant="h4">{bankPaymentReport.payment_count}</Typography>
+                      <Typography variant="h4">
+                        {bankPaymentReport.by_method?.reduce((sum: number, m: any) => sum + m.transaction_count, 0) ||
+                          0}
+                      </Typography>
                     </CardContent>
                   </Card>
                 </Grid>
@@ -389,7 +394,7 @@ export default function ReportsDashboard() {
                                 {formatCurrency(item.amount)}
                               </Typography>
                             </TableCell>
-                            <TableCell align="right">{item.count}</TableCell>
+                            <TableCell align="right">{item.transaction_count}</TableCell>
                           </TableRow>
                         ))}
                       </TableBody>
@@ -460,7 +465,7 @@ export default function ReportsDashboard() {
                         Total GST Credit (Inflow)
                       </Typography>
                       <Typography variant="h4" color="success.main">
-                        {formatCurrency(gstReport.total_credit)}
+                        {formatCurrency(gstReport.inflow?.total_credit || 0)}
                       </Typography>
                       <Typography variant="caption" color="text.secondary">
                         From Sales Invoices
@@ -475,7 +480,7 @@ export default function ReportsDashboard() {
                         Total GST Debit (Outflow)
                       </Typography>
                       <Typography variant="h4" color="error.main">
-                        {formatCurrency(gstReport.total_debit)}
+                        {formatCurrency(gstReport.inflow?.total_debit || 0)}
                       </Typography>
                       <Typography variant="caption" color="text.secondary">
                         From Purchase Invoices
@@ -489,11 +494,14 @@ export default function ReportsDashboard() {
                       <Typography variant="body2" color="text.secondary">
                         Net GST Payable
                       </Typography>
-                      <Typography variant="h4" color={gstReport.net_gst >= 0 ? 'error.main' : 'success.main'}>
-                        {formatCurrency(Math.abs(gstReport.net_gst))}
+                      <Typography
+                        variant="h4"
+                        color={(gstReport.inflow?.net_gst_payable || 0) >= 0 ? 'error.main' : 'success.main'}
+                      >
+                        {formatCurrency(Math.abs(gstReport.inflow?.net_gst_payable || 0))}
                       </Typography>
                       <Typography variant="caption" color="text.secondary">
-                        {gstReport.net_gst >= 0 ? 'To Pay' : 'Refundable'}
+                        {(gstReport.inflow?.net_gst_payable || 0) >= 0 ? 'To Pay' : 'Refundable'}
                       </Typography>
                     </CardContent>
                   </Card>
@@ -520,10 +528,10 @@ export default function ReportsDashboard() {
                             </TableCell>
                             <TableCell align="right">
                               <Typography variant="body1" fontWeight="medium">
-                                {formatCurrency(item.gst_amount)}
+                                {formatCurrency(item.total_gst)}
                               </Typography>
                             </TableCell>
-                            <TableCell align="right">{item.count}</TableCell>
+                            <TableCell align="right">{item.invoice_count}</TableCell>
                           </TableRow>
                         ))}
                       </TableBody>
@@ -557,21 +565,25 @@ export default function ReportsDashboard() {
                     Receivables Aging Summary
                   </Typography>
                   <Grid container spacing={2}>
-                    {agingReport.buckets?.map((bucket: any) => (
-                      <Grid item xs={12} sm={6} md={2.4} key={bucket.bucket}>
-                        <Card variant="outlined" sx={getAgingBucketStyle(bucket.bucket)}>
-                          <CardContent>
-                            <Typography variant="body2" color="text.secondary">
-                              {bucket.bucket}
-                            </Typography>
-                            <Typography variant="h5">{formatCurrency(bucket.total_due)}</Typography>
-                            <Typography variant="caption" color="text.secondary">
-                              {bucket.invoice_count} invoices
-                            </Typography>
-                          </CardContent>
-                        </Card>
-                      </Grid>
-                    ))}
+                    {['current', 'overdue_1_30', 'overdue_31_60', 'overdue_61_90', 'overdue_90_plus'].map((key) => {
+                      const bucket = agingReport[key];
+                      if (!bucket) return null;
+                      return (
+                        <Grid item xs={12} sm={6} md={2.4} key={key}>
+                          <Card variant="outlined" sx={getAgingBucketStyle(bucket.label)}>
+                            <CardContent>
+                              <Typography variant="body2" color="text.secondary">
+                                {bucket.label}
+                              </Typography>
+                              <Typography variant="h5">{formatCurrency(bucket.total_due)}</Typography>
+                              <Typography variant="caption" color="text.secondary">
+                                {bucket.invoice_count} invoices
+                              </Typography>
+                            </CardContent>
+                          </Card>
+                        </Grid>
+                      );
+                    })}
                   </Grid>
                 </Grid>
 
@@ -593,19 +605,25 @@ export default function ReportsDashboard() {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {agingReport.invoices?.map((invoice: any) => (
-                          <TableRow key={invoice.invoice_id}>
-                            <TableCell>{invoice.invoice_number}</TableCell>
-                            <TableCell>{invoice.company_name}</TableCell>
-                            <TableCell>{formatDate(invoice.billing_date)}</TableCell>
-                            <TableCell align="right">{formatCurrency(invoice.billed_amount)}</TableCell>
-                            <TableCell align="right">{formatCurrency(invoice.amount_due)}</TableCell>
-                            <TableCell align="right">{invoice.days_overdue}</TableCell>
-                            <TableCell>
-                              <Chip label={invoice.bucket} size="small" sx={getAgingBucketStyle(invoice.bucket)} />
-                            </TableCell>
-                          </TableRow>
-                        ))}
+                        {['current', 'overdue_1_30', 'overdue_31_60', 'overdue_61_90', 'overdue_90_plus'].flatMap(
+                          (key) => {
+                            const bucket = agingReport[key];
+                            if (!bucket || !bucket.invoices) return [];
+                            return bucket.invoices.map((invoice: any) => (
+                              <TableRow key={invoice.invoice_number}>
+                                <TableCell>{invoice.invoice_number}</TableCell>
+                                <TableCell>{invoice.company_name}</TableCell>
+                                <TableCell>{formatDate(invoice.billing_date)}</TableCell>
+                                <TableCell align="right">{formatCurrency(invoice.amount_due)}</TableCell>
+                                <TableCell align="right">{formatCurrency(invoice.amount_due)}</TableCell>
+                                <TableCell align="right">{invoice.days_overdue}</TableCell>
+                                <TableCell>
+                                  <Chip label={bucket.label} size="small" sx={getAgingBucketStyle(bucket.label)} />
+                                </TableCell>
+                              </TableRow>
+                            ));
+                          },
+                        )}
                       </TableBody>
                     </Table>
                   </TableContainer>

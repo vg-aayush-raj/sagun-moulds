@@ -119,11 +119,25 @@ export interface InvoiceListItem {
   due_date: string | null;
   pattern_type: InvoicePatternType;
   final_total: number;
+  billed_amount: number;
   amount_paid: number;
   amount_due: number;
   payment_status: PaymentStatus;
   status: string;
   created_at: string;
+}
+
+// Alias for backward compatibility
+export type Invoice = InvoiceListItem;
+
+export interface ListInvoicesResponse {
+  invoices: InvoiceListItem[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    total_pages: number;
+  };
 }
 
 export interface InvoiceDetail {
@@ -355,10 +369,10 @@ export const invoiceApi = {
     page?: number;
     limit?: number;
     pattern_type?: InvoicePatternType;
-    payment_status?: PaymentStatus;
+    payment_status?: PaymentStatus | PaymentStatus[];
     status?: string;
     company_id?: number;
-  }) => {
+  }): Promise<ListInvoicesResponse> => {
     const response = await apiClient.get('/invoices/list', {
       params: {
         page: params?.page || 1,
@@ -420,44 +434,44 @@ export const invoiceApi = {
 
   // ========== Reports ==========
 
-  getCashInflowReport: async (startDate: string, endDate: string) => {
+  getCashInflowReport: async (params: { start_date: string; end_date: string }) => {
     const response = await apiClient.get<CashInflowReport>('/reports/cash-inflow', {
-      params: { start_date: startDate, end_date: endDate },
+      params,
     });
     return response.data;
   },
 
-  getBankPaymentReport: async (startDate: string, endDate: string) => {
+  getBankPaymentReport: async (params: { start_date: string; end_date: string }) => {
     const response = await apiClient.get<BankPaymentReport>('/reports/bank-payments', {
-      params: { start_date: startDate, end_date: endDate },
+      params,
     });
     return response.data;
   },
 
-  getGSTReport: async (startDate: string, endDate: string) => {
+  getGSTReport: async (params: { start_date: string; end_date: string }) => {
     const response = await apiClient.get<GSTReport>('/reports/gst', {
-      params: { start_date: startDate, end_date: endDate },
+      params,
     });
     return response.data;
   },
 
-  getAgingReport: async (asOfDate?: string) => {
+  getAgingReport: async (params?: { as_of_date?: string }) => {
     const response = await apiClient.get<AgingReport>('/reports/aging', {
-      params: asOfDate ? { as_of_date: asOfDate } : {},
+      params,
     });
     return response.data;
   },
 
-  getCustomerStatement: async (companyId: number, startDate: string, endDate: string) => {
+  getCustomerStatement: async (companyId: number, params: { start_date: string; end_date: string }) => {
     const response = await apiClient.get<CustomerStatement>(`/reports/customer-statement/${companyId}`, {
-      params: { start_date: startDate, end_date: endDate },
+      params,
     });
     return response.data;
   },
 
-  downloadGSTR1Excel: async (startDate: string, endDate: string) => {
+  downloadGSTR1Excel: async (params: { start_date: string; end_date: string }) => {
     const response = await apiClient.get('/reports/gstr1/download', {
-      params: { start_date: startDate, end_date: endDate },
+      params,
       responseType: 'blob',
     });
     return response.data;
