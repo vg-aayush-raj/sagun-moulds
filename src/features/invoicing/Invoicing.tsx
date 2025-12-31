@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { Typography, Tabs, Tab, Box, Card, CardContent } from '@mui/material';
 import GSTCreditCard from './components/GSTCreditCard';
-import InvoiceForm from './components/InvoiceForm';
+import InvoiceFormRevamped from './components/InvoiceFormRevamped';
 import InvoiceList from './components/InvoiceList';
+import PaymentTracking from './components/PaymentTracking';
+import ReportsDashboard from './components/ReportsDashboard';
 import styles from './Invoicing.module.css';
 
 interface TabPanelProps {
@@ -32,24 +34,39 @@ export default function Invoicing() {
   return (
     <div className={styles.container}>
       <Typography variant="h4" className={styles.title}>
-        Invoicing & Billing
+        Invoicing & Billing Management
       </Typography>
 
       <GSTCreditCard />
 
       <Card>
         <CardContent>
-          <Tabs value={activeTab} onChange={(_, newValue) => setActiveTab(newValue)}>
+          <Tabs
+            value={activeTab}
+            onChange={(_, newValue) => setActiveTab(newValue)}
+            variant="scrollable"
+            scrollButtons="auto"
+          >
             <Tab label="Create Invoice" />
             <Tab label="Invoice List" />
+            <Tab label="Payment Tracking" />
+            <Tab label="Reports & Analytics" />
           </Tabs>
 
           <TabPanel value={activeTab} index={0}>
-            <InvoiceForm onSuccess={handleSuccess} />
+            <InvoiceFormRevamped onSuccess={handleSuccess} />
           </TabPanel>
 
           <TabPanel value={activeTab} index={1}>
             <InvoiceList refresh={refreshTrigger} />
+          </TabPanel>
+
+          <TabPanel value={activeTab} index={2}>
+            <PaymentTracking />
+          </TabPanel>
+
+          <TabPanel value={activeTab} index={3}>
+            <ReportsDashboard />
           </TabPanel>
         </CardContent>
       </Card>

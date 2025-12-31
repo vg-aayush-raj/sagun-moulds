@@ -10,6 +10,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
+import GroupIcon from '@mui/icons-material/Group';
 import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Divider } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 
@@ -58,6 +59,7 @@ export default function Menu() {
         <MenuItem to="/proforma" icon={<DescriptionIcon />} text="Proforma" />
         <MenuItem to="/quotation" icon={<RequestQuoteIcon />} text="Quotation" />
         <MenuItem to="/companies" icon={<BusinessIcon />} text="Companies" />
+        <MenuItem to="/employees" icon={<GroupIcon />} text="Employees" />
         <Divider sx={{ my: 1 }} />
         <MenuItem to="/business-analysis" icon={<BusinessCenterIcon />} text="Business Analysis" />
         <MenuItem to="/minimum-sales-support-price" icon={<FactoryIcon />} text="Minimum Sales Support Price" />
