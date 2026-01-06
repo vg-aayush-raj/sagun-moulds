@@ -1,7 +1,10 @@
 import { FC } from 'react';
 import { Box, Container, AppBar, Toolbar, Typography, Drawer } from '@mui/material';
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { ThemeProvider } from './components/styles';
+import { AppContextProvider } from './context/AppContext';
 import LandingPage from './features/landing-page/LandingPage';
 import Menu from './routes/menu';
 import routesConfig from './routes/routesConfig';
@@ -58,7 +61,11 @@ const router = createBrowserRouter([
 const App: FC = () => {
   return (
     <ThemeProvider>
-      <RouterProvider router={router} />
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <AppContextProvider>
+          <RouterProvider router={router} />
+        </AppContextProvider>
+      </LocalizationProvider>
     </ThemeProvider>
   );
 };
