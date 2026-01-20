@@ -152,11 +152,35 @@ export default function InvoiceDetail({ invoice, open, onClose }: InvoiceDetailP
             </Grid>
 
             <Grid size={{ xs: 6 }}>
-              <Typography>GST Total:</Typography>
+              <Typography>GST on Base:</Typography>
             </Grid>
             <Grid size={{ xs: 6 }} sx={{ textAlign: 'right' }}>
               <Typography fontWeight="medium">₹{Number(invoice.gst_total || 0).toFixed(2)}</Typography>
             </Grid>
+
+            <Grid size={{ xs: 12 }}>
+              <Divider sx={{ my: 1 }} />
+            </Grid>
+
+            <Grid size={{ xs: 6 }}>
+              <Typography fontWeight="medium">GST + Base Total:</Typography>
+            </Grid>
+            <Grid size={{ xs: 6 }} sx={{ textAlign: 'right' }}>
+              <Typography fontWeight="medium">
+                ₹{(Number(invoice.base_total || 0) + Number(invoice.gst_total || 0)).toFixed(2)}
+              </Typography>
+            </Grid>
+
+            {invoice.cash_total > 0 && (
+              <>
+                <Grid size={{ xs: 6 }}>
+                  <Typography>Cash Total:</Typography>
+                </Grid>
+                <Grid size={{ xs: 6 }} sx={{ textAlign: 'right' }}>
+                  <Typography fontWeight="medium">₹{Number(invoice.cash_total || 0).toFixed(2)}</Typography>
+                </Grid>
+              </>
+            )}
 
             <Grid size={{ xs: 12 }}>
               <Divider sx={{ my: 1 }} />

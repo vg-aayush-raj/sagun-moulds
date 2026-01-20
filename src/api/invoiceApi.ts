@@ -38,6 +38,7 @@ export interface InvoiceItem {
   cup_type: string;
   base_price_per_cup: number;
   quantity: number;
+  unit: string;
   gst_rate: number;
   gst_amount?: number;
   cash_per_cup: number;
@@ -57,11 +58,20 @@ export interface UnderbillingConfig {
   warning_message?: string;
 }
 
+export interface InvoiceFrom {
+  company_name: string;
+  address: string;
+  contact?: string;
+  email?: string;
+  gstin?: string;
+}
+
 // Pattern Input Types
 export interface NormalPatternInput {
   items: Array<{
     cup_type: string;
     quantity: number;
+    unit: string;
     base_price_per_cup: number;
     gst_rate: number;
   }>;
@@ -72,6 +82,7 @@ export interface MixedPatternInput {
     cup_type: string;
     gst_quantity: number;
     cash_quantity: number;
+    unit: string;
     base_price_per_cup: number;
     gst_rate: number;
   }>;
@@ -81,6 +92,7 @@ export interface UnderbillingPatternInput {
   items: Array<{
     cup_type: string;
     quantity: number;
+    unit: string;
     agreed_price_per_cup: number;
     billed_price_per_cup: number;
     gst_rate: number;
@@ -91,11 +103,13 @@ export interface MostlyCashPatternInput {
   items: Array<{
     cup_type: string;
     quantity: number;
+    unit: string;
     cash_price_per_cup: number;
   }>;
   gst_items?: Array<{
     cup_type: string;
     quantity: number;
+    unit: string;
     base_price_per_cup: number;
     gst_rate: number;
   }>;
@@ -103,6 +117,7 @@ export interface MostlyCashPatternInput {
 
 export interface CreateInvoiceRequest {
   company_id: number;
+  from: InvoiceFrom;
   billing_date: string;
   due_date?: string;
   payment_terms?: string;
@@ -145,6 +160,7 @@ export interface InvoiceDetail {
   invoice_number: string;
   company_name: string;
   company_id: number;
+  from: InvoiceFrom;
   billing_date: string;
   due_date: string | null;
   payment_terms: string | null;

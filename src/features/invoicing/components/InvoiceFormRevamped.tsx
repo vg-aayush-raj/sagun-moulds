@@ -97,9 +97,17 @@ export default function InvoiceFormRevamped({ onSuccess }: InvoiceFormProps) {
     }
   };
 
-  const handleCancel = () => {
+  const handleCancel = async () => {
+    // Delete the draft invoice before going back to edit
+    if (preview?.invoice?.id) {
+      try {
+        await invoiceApi.deleteInvoice(preview.invoice.id);
+      } catch (err) {
+        console.error('Failed to delete draft invoice:', err);
+      }
+    }
     setPreview(null);
-    setActiveStep(1); // Go back to form
+    setActiveStep(1); // Go back to form with preserved data
   };
 
   const handleReset = () => {
@@ -116,6 +124,7 @@ export default function InvoiceFormRevamped({ onSuccess }: InvoiceFormProps) {
       onSubmit: handlePatternFormSubmit,
       onCancel: handleReset,
       loading,
+      initialData: invoiceData, // Pass the saved data for editing
     };
 
     switch (selectedPattern) {

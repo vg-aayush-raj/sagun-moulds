@@ -17,13 +17,29 @@ import {
   TableRow,
   Alert,
   AlertTitle,
+  MenuItem,
+  Card,
+  CardContent,
+  Divider,
 } from '@mui/material';
-import { Add as AddIcon, Delete as DeleteIcon, Warning as WarningIcon } from '@mui/icons-material';
+import {
+  Add as AddIcon,
+  Delete as DeleteIcon,
+  Warning as WarningIcon,
+  Business as BusinessIcon,
+} from '@mui/icons-material';
 import { useAppContext } from '../../../../context/AppContext';
-import { CreateInvoiceRequest, InvoicePatternType, UnderbillingPatternInput } from '../../../../api/invoiceApi';
+import {
+  CreateInvoiceRequest,
+  InvoicePatternType,
+  UnderbillingPatternInput,
+  InvoiceFrom,
+} from '../../../../api/invoiceApi';
 import { formatCurrency } from '../../utils/invoiceHelpers';
+import { UNIT_OPTIONS } from '../../schema';
 
 interface UnderbillingPatternFormProps {
+  initialData?: Partial<CreateInvoiceRequest> | null;
   onSubmit: (data: Partial<CreateInvoiceRequest>) => void;
   onCancel: () => void;
   loading: boolean;
@@ -31,6 +47,7 @@ interface UnderbillingPatternFormProps {
 
 interface FormData {
   company_id: number | null;
+  from: InvoiceFrom;
   billing_date: string;
   due_date?: string;
   payment_terms?: string;
@@ -38,15 +55,66 @@ interface FormData {
   items: Array<{
     cup_type: string;
     quantity: number;
+    unit: string;
     agreed_price_per_cup: number;
     billed_price_per_cup: number;
     gst_rate: number;
   }>;
 }
 
-export default function UnderbillingPatternForm({ onSubmit, onCancel, loading }: UnderbillingPatternFormProps) {
+export default function UnderbillingPatternForm({
+  initialData,
+  onSubmit,
+  onCancel,
+  loading,
+}: UnderbillingPatternFormProps) {
   const { companies } = useAppContext();
   const [warnings, setWarnings] = useState<string[]>([]);
+
+  const getDefaultValues = (): FormData => {
+    if (initialData && initialData.pattern_input) {
+      const input = initialData.pattern_input as UnderbillingPatternInput;
+      return {
+        company_id: initialData.company_id || null,
+        from: initialData.from || {
+          company_name: 'Sagun Moldify Private Limited',
+          address: 'Maujipur, Fatuha',
+          contact: '9835279911',
+          email: 'sagunmoldify@gmail.com',
+          gstin: '10ABQCS2716M1Z5',
+        },
+        billing_date: initialData.billing_date || new Date().toISOString().split('T')[0],
+        due_date: initialData.due_date,
+        payment_terms: initialData.payment_terms || 'Net 30',
+        notes: initialData.notes,
+        items: input.items || [
+          {
+            cup_type: '',
+            quantity: 1000,
+            unit: 'Boxes',
+            agreed_price_per_cup: 0,
+            billed_price_per_cup: 0,
+            gst_rate: 18,
+          },
+        ],
+      };
+    }
+    return {
+      company_id: null,
+      from: {
+        company_name: 'Sagun Moldify Private Limited',
+        address: 'Maujipur, Fatuha',
+        contact: '9835279911',
+        email: 'sagunmoldify@gmail.com',
+        gstin: '10ABQCS2716M1Z5',
+      },
+      billing_date: new Date().toISOString().split('T')[0],
+      payment_terms: 'Net 30',
+      items: [
+        { cup_type: '', quantity: 1000, unit: 'Boxes', agreed_price_per_cup: 0, billed_price_per_cup: 0, gst_rate: 18 },
+      ],
+    };
+  };
 
   const {
     control,
@@ -54,12 +122,7 @@ export default function UnderbillingPatternForm({ onSubmit, onCancel, loading }:
     watch,
     formState: { errors },
   } = useForm<FormData>({
-    defaultValues: {
-      company_id: null,
-      billing_date: new Date().toISOString().split('T')[0],
-      payment_terms: 'Net 30',
-      items: [{ cup_type: '', quantity: 1000, agreed_price_per_cup: 0, billed_price_per_cup: 0, gst_rate: 18 }],
-    },
+    defaultValues: getDefaultValues(),
   });
 
   const { fields, append, remove } = useFieldArray({ control, name: 'items' });
@@ -125,6 +188,7 @@ export default function UnderbillingPatternForm({ onSubmit, onCancel, loading }:
 
     onSubmit({
       company_id: data.company_id,
+      from: data.from,
       billing_date: data.billing_date,
       due_date: data.due_date,
       payment_terms: data.payment_terms,
@@ -188,6 +252,56 @@ export default function UnderbillingPatternForm({ onSubmit, onCancel, loading }:
           />
         </Grid>
 
+        {/* From Company Information Section */}
+        <Grid item xs={12}>
+          <Card variant="outlined">
+            <CardContent>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                <BusinessIcon sx={{ mr: 1, color: 'primary.main' }} />
+                <Typography variant="h6">Your Company Information</Typography>
+              </Box>
+              <Divider sx={{ mb: 2 }} />
+              <Grid container spacing={2}>
+                <Grid item xs={12} md={6}>
+                  <Controller
+                    name="from.company_name"
+                    control={control}
+                    render={({ field }) => <TextField {...field} label="Company Name" fullWidth required />}
+                  />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Controller
+                    name="from.address"
+                    control={control}
+                    render={({ field }) => <TextField {...field} label="Address" fullWidth required />}
+                  />
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <Controller
+                    name="from.contact"
+                    control={control}
+                    render={({ field }) => <TextField {...field} label="Contact" fullWidth />}
+                  />
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <Controller
+                    name="from.email"
+                    control={control}
+                    render={({ field }) => <TextField {...field} label="Email" fullWidth type="email" />}
+                  />
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <Controller
+                    name="from.gstin"
+                    control={control}
+                    render={({ field }) => <TextField {...field} label="GSTIN" fullWidth />}
+                  />
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
+        </Grid>
+
         {/* Billing Date */}
         <Grid item xs={12} md={3}>
           <Controller
@@ -246,6 +360,7 @@ export default function UnderbillingPatternForm({ onSubmit, onCancel, loading }:
                 <TableRow>
                   <TableCell>Cup Type</TableCell>
                   <TableCell align="right">Quantity</TableCell>
+                  <TableCell align="center">Unit</TableCell>
                   <TableCell align="right">Agreed Price/Cup (₹)</TableCell>
                   <TableCell align="right">Billed Price/Cup (₹)</TableCell>
                   <TableCell align="right">GST %</TableCell>
@@ -289,6 +404,21 @@ export default function UnderbillingPatternForm({ onSubmit, onCancel, loading }:
                               sx={{ width: 100 }}
                               inputProps={{ min: 1 }}
                             />
+                          )}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <Controller
+                          name={`items.${index}.unit`}
+                          control={control}
+                          render={({ field }) => (
+                            <TextField {...field} select size="small" sx={{ width: 100 }}>
+                              {UNIT_OPTIONS.map((unit) => (
+                                <MenuItem key={unit} value={unit}>
+                                  {unit}
+                                </MenuItem>
+                              ))}
+                            </TextField>
                           )}
                         />
                       </TableCell>
@@ -382,7 +512,14 @@ export default function UnderbillingPatternForm({ onSubmit, onCancel, loading }:
           <Button
             startIcon={<AddIcon />}
             onClick={() =>
-              append({ cup_type: '', quantity: 1000, agreed_price_per_cup: 0, billed_price_per_cup: 0, gst_rate: 18 })
+              append({
+                cup_type: '',
+                quantity: 1000,
+                unit: 'Boxes',
+                agreed_price_per_cup: 0,
+                billed_price_per_cup: 0,
+                gst_rate: 18,
+              })
             }
             sx={{ mt: 2 }}
           >
