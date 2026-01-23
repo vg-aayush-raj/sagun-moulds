@@ -29,3 +29,18 @@ export type InvoiceFrom = z.infer<typeof invoiceFromSchema>;
 export type InvoiceFormData = z.infer<typeof invoiceSchema>;
 
 export const UNIT_OPTIONS = ['Boxes', 'Lakhs', 'Nos', 'Kgs', 'Pcs', 'Sets', 'Dozens', 'Rolls', 'Meters'];
+
+export const DEFAULT_INVOICE_TERMS = `1. Payment Terms: 
+   - Payment as per agreed terms
+   - Cheques subject to realization
+
+2. GST: 
+   - GST extra as applicable
+   
+3. Freight charges are extra, as applicable.
+
+4. All disputes are subject to local jurisdiction.
+
+5. Goods once sold will not be taken back.
+
+6. Delivery will be made as per mutually agreed schedule.`;

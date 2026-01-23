@@ -60,7 +60,7 @@ export interface UnderbillingConfig {
 
 export interface InvoiceFrom {
   company_name: string;
-  address: string;
+  address?: string;
   contact?: string;
   email?: string;
   gstin?: string;
@@ -124,6 +124,11 @@ export interface CreateInvoiceRequest {
   pattern_type: InvoicePatternType;
   pattern_input: NormalPatternInput | MixedPatternInput | UnderbillingPatternInput | MostlyCashPatternInput;
   notes?: string;
+  terms_conditions?: string;
+  include_vehicle?: boolean;
+  vehicle_type?: string;
+  vehicle_number?: string;
+  destination?: string;
 }
 
 export interface InvoiceListItem {
@@ -177,6 +182,11 @@ export interface InvoiceDetail {
   payment_status: PaymentStatus;
   status: string;
   notes: string | null;
+  terms_conditions: string | null;
+  include_vehicle: boolean;
+  vehicle_type: string | null;
+  vehicle_number: string | null;
+  destination: string | null;
   payments: PaymentRecord[];
   created_at: string;
   updated_at: string;

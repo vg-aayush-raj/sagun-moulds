@@ -21,6 +21,8 @@ import {
   Card,
   CardContent,
   Divider,
+  Checkbox,
+  FormControlLabel,
 } from '@mui/material';
 import {
   Add as AddIcon,
@@ -36,7 +38,7 @@ import {
   InvoiceFrom,
 } from '../../../../api/invoiceApi';
 import { formatCurrency } from '../../utils/invoiceHelpers';
-import { UNIT_OPTIONS } from '../../schema';
+import { UNIT_OPTIONS, DEFAULT_INVOICE_TERMS } from '../../schema';
 
 interface UnderbillingPatternFormProps {
   initialData?: Partial<CreateInvoiceRequest> | null;
@@ -52,6 +54,11 @@ interface FormData {
   due_date?: string;
   payment_terms?: string;
   notes?: string;
+  terms_conditions?: string;
+  include_vehicle?: boolean;
+  vehicle_type?: string;
+  vehicle_number?: string;
+  destination?: string;
   items: Array<{
     cup_type: string;
     quantity: number;
@@ -87,6 +94,11 @@ export default function UnderbillingPatternForm({
         due_date: initialData.due_date,
         payment_terms: initialData.payment_terms || 'Net 30',
         notes: initialData.notes,
+        terms_conditions: initialData.terms_conditions || DEFAULT_INVOICE_TERMS,
+        include_vehicle: initialData.include_vehicle || false,
+        vehicle_type: initialData.vehicle_type || '',
+        vehicle_number: initialData.vehicle_number || '',
+        destination: initialData.destination || '',
         items: input.items || [
           {
             cup_type: '',
@@ -110,6 +122,11 @@ export default function UnderbillingPatternForm({
       },
       billing_date: new Date().toISOString().split('T')[0],
       payment_terms: 'Net 30',
+      terms_conditions: DEFAULT_INVOICE_TERMS,
+      include_vehicle: false,
+      vehicle_type: '',
+      vehicle_number: '',
+      destination: '',
       items: [
         { cup_type: '', quantity: 1000, unit: 'Boxes', agreed_price_per_cup: 0, billed_price_per_cup: 0, gst_rate: 18 },
       ],
@@ -127,6 +144,7 @@ export default function UnderbillingPatternForm({
 
   const { fields, append, remove } = useFieldArray({ control, name: 'items' });
   const watchItems = watch('items');
+  const watchIncludeVehicle = watch('include_vehicle');
 
   // Calculate warnings in useEffect to avoid infinite loop
   useEffect(() => {
@@ -195,6 +213,11 @@ export default function UnderbillingPatternForm({
       pattern_type: InvoicePatternType.UNDERBILLING,
       pattern_input: patternInput,
       notes: data.notes,
+      terms_conditions: data.terms_conditions,
+      include_vehicle: data.include_vehicle,
+      vehicle_type: data.vehicle_type,
+      vehicle_number: data.vehicle_number,
+      destination: data.destination,
     });
   };
 
@@ -273,7 +296,7 @@ export default function UnderbillingPatternForm({
                   <Controller
                     name="from.address"
                     control={control}
-                    render={({ field }) => <TextField {...field} label="Address" fullWidth required />}
+                    render={({ field }) => <TextField {...field} label="Address" fullWidth />}
                   />
                 </Grid>
                 <Grid item xs={12} md={4}>
@@ -347,6 +370,80 @@ export default function UnderbillingPatternForm({
             control={control}
             render={({ field }) => <TextField {...field} label="Notes (Internal)" fullWidth multiline rows={1} />}
           />
+        </Grid>
+
+        {/* Terms & Conditions */}
+        <Grid item xs={12}>
+          <Card variant="outlined">
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                Terms & Conditions
+              </Typography>
+              <Controller
+                name="terms_conditions"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label="Terms & Conditions"
+                    fullWidth
+                    multiline
+                    rows={6}
+                    helperText="These terms will appear on the invoice"
+                  />
+                )}
+              />
+            </CardContent>
+          </Card>
+        </Grid>
+
+        {/* Transport Details */}
+        <Grid item xs={12}>
+          <Card variant="outlined">
+            <CardContent>
+              <Controller
+                name="include_vehicle"
+                control={control}
+                render={({ field }) => (
+                  <FormControlLabel
+                    control={<Checkbox {...field} checked={field.value} />}
+                    label="Include Vehicle Details in Invoice"
+                  />
+                )}
+              />
+              {watchIncludeVehicle && (
+                <Grid container spacing={2} sx={{ mt: 1 }}>
+                  <Grid item xs={12} md={6}>
+                    <Controller
+                      name="vehicle_type"
+                      control={control}
+                      render={({ field }) => (
+                        <TextField {...field} label="Vehicle Type" fullWidth placeholder="e.g., Truck, Van, Tempo" />
+                      )}
+                    />
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <Controller
+                      name="vehicle_number"
+                      control={control}
+                      render={({ field }) => (
+                        <TextField {...field} label="Vehicle Number" fullWidth placeholder="e.g., BR01AB1234" />
+                      )}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Controller
+                      name="destination"
+                      control={control}
+                      render={({ field }) => (
+                        <TextField {...field} label="Destination" fullWidth placeholder="e.g., Patna, Bihar" />
+                      )}
+                    />
+                  </Grid>
+                </Grid>
+              )}
+            </CardContent>
+          </Card>
         </Grid>
 
         {/* Items Table */}
